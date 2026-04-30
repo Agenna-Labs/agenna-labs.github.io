@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENNA Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #d8d2be;
+      --secondary: #988871;
+      --bg: #17181b;
+      --logo-size: 174px;
+      --overlap: 64;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .logo {
+      display: inline-block;
+      position: relative;
+      line-height: 1;
+      visibility: hidden;
+    }
+
+    .logo.ready { visibility: visible; }
+
+    .logo .gauge {
+      visibility: hidden;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: var(--logo-size);
+      line-height: 1;
+    }
+
+    .logo .n {
+      position: absolute;
+      top: 0;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: var(--logo-size);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .logo .n1 { left: 0; color: var(--primary); z-index: 1; }
+    .logo .n2 { color: var(--secondary); z-index: 2; }
+    .logo .n3 {
+      left: 0;
+      color: var(--primary);
+      z-index: 3;
+      clip-path: inset(0 0 0 calc((100% - var(--overlap) * 0.5%) * 1));
+    }
+
+    .contact {
+      position: relative;
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .contact a {
+      color: #8a857a;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .contact a:hover { color: var(--primary); }
+
+    .copy-btn {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-left: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: #5a564f;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.15s ease;
+    }
+    .copy-btn:hover { color: var(--primary); }
+    .copy-btn:active { transform: translateY(-50%) scale(0.92); }
+    .copy-btn.ok { color: #6fa896; }
+    .copy-btn svg {
+      width: 13px;
+      height: 13px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="stack">
+    <div class="logo" id="logo">
+      <span class="gauge">N</span>
+      <span class="n n1">N</span>
+      <span class="n n2">N</span>
+      <span class="n n3">N</span>
+    </div>
+
+    <div class="contact">
+      <a href="mailto:hello@agennalabs.com" id="email">hello@agennalabs.com</a>
+      <button class="copy-btn" id="copyBtn" aria-label="Copy email" title="Copy email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var OVERLAP = 64; // percent
+      var LOGO_SIZE = 174; // px
+      var FONT = 'DM Serif Display';
+      var WEIGHT = 400;
+
+      function measureN() {
+        var c = document.createElement('canvas');
+        var ctx = c.getContext('2d');
+        ctx.font = WEIGHT + ' ' + LOGO_SIZE + 'px "' + FONT + '"';
+        return ctx.measureText('N').width;
+      }
+
+      function layoutLogo() {
+        var nw = measureN();
+        var overlapPx = nw * (OVERLAP / 100);
+        var pairW = 2 * nw - overlapPx;
+
+        var logo = document.getElementById('logo');
+        logo.style.width = pairW + 'px';
+        logo.style.height = LOGO_SIZE + 'px';
+
+        var n2 = logo.querySelector('.n2');
+        n2.style.left = (nw - overlapPx) + 'px';
+
+        // Reveal only the right portion of the front primary N for interleave
+        var clipPct = (1 - OVERLAP / 200) * 100;
+        var n3 = logo.querySelector('.n3');
+        n3.style.clipPath = 'inset(0 0 0 ' + clipPct + '%)';
+
+        logo.classList.add('ready');
+      }
+
+      if (document.fonts && document.fonts.load) {
+        document.fonts.load(WEIGHT + ' ' + LOGO_SIZE + 'px "' + FONT + '"').then(layoutLogo);
+      } else {
+        window.addEventListener('load', layoutLogo);
+      }
+
+      // Copy email
+      var btn = document.getElementById('copyBtn');
+      btn.addEventListener('click', function () {
+        var email = 'hello@agennalabs.com';
+        var done = function () {
+          btn.classList.add('ok');
+          setTimeout(function () { btn.classList.remove('ok'); }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(done).catch(function () {
+            fallbackCopy(email); done();
+          });
+        } else {
+          fallbackCopy(email); done();
+        }
+      });
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    })();
+  </script>
+</body>
+</html>
