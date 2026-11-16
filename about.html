@@ -15,7 +15,9 @@
       --primary: #d8d2be;
       --secondary: #988871;
       --bg: #17181b;
-      --logo-size: 72px;
+      --logo-size: 110px;
+      --type-size: 44px;
+      --tracking: -0.0286em; /* brand spec: -2px at 70px */
     }
 
     body {
@@ -45,46 +47,58 @@
       gap: 60px;
     }
 
-    .head {
+    /* Brand lockup: NN mark over the AGENNA wordmark, with a hairline divider */
+    h1 { font-size: inherit; font-weight: 400; }
+    .lockup {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-    }
-
-    .head h1 {
-      font-family: 'DM Serif Display', serif;
-      font-weight: 400;
-      font-size: 1.7rem;
-      line-height: 1.15;
-      margin-top: 26px;
-    }
-
-    .head p { color: #8a857a; }
-
-    .logo {
-      display: inline-block;
-      position: relative;
-      height: 1em;
-      line-height: 1;
-      font-family: 'DM Serif Display', serif;
-      font-weight: 400;
-      font-size: var(--logo-size);
+      color: inherit;
       text-decoration: none;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
       visibility: hidden;
     }
+    .lockup.ready { visibility: visible; }
 
-    .logo.ready { visibility: visible; }
-    .logo .gauge { visibility: hidden; }
-    .logo .n { position: absolute; top: 0; user-select: none; }
-    .logo .n1 { left: 0; color: var(--primary); z-index: 1; }
-    .logo .n2 { color: var(--secondary); z-index: 2; }
-    .logo .n3 { left: 0; color: var(--primary); z-index: 3; }
+    .mark { font-size: var(--logo-size); line-height: 1; }
+
+    .wordmark-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .wordmark {
+      display: inline-flex;
+      align-items: baseline;
+      font-size: var(--type-size);
+      font-weight: 400;
+      line-height: 1;
+      user-select: none;
+    }
+    .wordmark .age { letter-spacing: var(--tracking); }
+    .wordmark .a { margin-left: var(--tracking); }
+
+    .divider {
+      height: 1px;
+      margin-top: 14px;
+      background: var(--secondary);
+      opacity: 0.4;
+    }
+
+    .nn { display: inline-block; position: relative; }
+    .nn .gauge { visibility: hidden; }
+    .nn .n { position: absolute; top: 0; user-select: none; }
+    .nn .n1 { left: 0; color: var(--primary); z-index: 1; }
+    .nn .n2 { color: var(--secondary); z-index: 2; }
+    .nn .n3 { left: 0; color: var(--primary); z-index: 3; clip-path: inset(0 0 0 68%); }
 
     .mission {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(1.6rem, 6vw, 2.3rem);
-      line-height: 1.2;
+      font-size: clamp(1.25rem, 4.6vw, 1.5rem);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
       text-wrap: balance;
     }
 
@@ -148,16 +162,13 @@
 </head>
 <body>
   <main class="page">
-    <header class="head">
-      <a class="logo" id="logo" href="/" aria-label="Agenna Labs home">
-        <span class="gauge">N</span>
-        <span class="n n1">N</span>
-        <span class="n n2">N</span>
-        <span class="n n3">N</span>
-      </a>
-      <h1>Agenna Labs</h1>
-      <p>AI Software Consultancy</p>
-    </header>
+    <h1><a class="lockup" id="lockup" href="/" aria-label="Agenna Labs home">
+      <span class="mark nn" aria-hidden="true"><span class="gauge">N</span><span class="n n1">N</span><span class="n n2">N</span><span class="n n3">N</span></span>
+      <span class="wordmark-wrap" aria-hidden="true">
+        <span class="wordmark"><span class="age">AGE</span><span class="nn"><span class="gauge">N</span><span class="n n1">N</span><span class="n n2">N</span><span class="n n3">N</span></span><span class="a">A</span></span>
+        <span class="divider"></span>
+      </span>
+    </a></h1>
 
     <p class="mission">We help SaaS businesses adapt to generative AI.</p>
 
@@ -182,38 +193,28 @@
   <script>
     (function () {
       var OVERLAP = 64; // percent
-      var LOGO_SIZE = 72; // px
       var FONT = 'DM Serif Display';
       var WEIGHT = 400;
 
-      function measureN() {
-        var c = document.createElement('canvas');
-        var ctx = c.getContext('2d');
-        ctx.font = WEIGHT + ' ' + LOGO_SIZE + 'px "' + FONT + '"';
-        return ctx.measureText('N').width;
-      }
-
       function layoutLogo() {
-        var nw = measureN();
-        var overlapPx = nw * (OVERLAP / 100);
-        var pairW = 2 * nw - overlapPx;
+        var ctx = document.createElement('canvas').getContext('2d');
+        ctx.font = WEIGHT + ' 100px "' + FONT + '"';
+        var nw = ctx.measureText('N').width / 100; // N width in em
+        var overlap = nw * (OVERLAP / 100);
 
-        var logo = document.getElementById('logo');
-        logo.style.width = pairW + 'px';
+        // Size each interleaved NN (mark and wordmark) relative to its own font size
+        document.querySelectorAll('.nn').forEach(function (nn) {
+          nn.style.width = (2 * nw - overlap) + 'em';
+          nn.querySelector('.n2').style.left = (nw - overlap) + 'em';
+          // Reveal only the right portion of the front primary N for interleave
+          nn.querySelector('.n3').style.clipPath = 'inset(0 0 0 ' + (1 - OVERLAP / 200) * 100 + '%)';
+        });
 
-        var n2 = logo.querySelector('.n2');
-        n2.style.left = (nw - overlapPx) + 'px';
-
-        // Reveal only the right portion of the front primary N for interleave
-        var clipPct = (1 - OVERLAP / 200) * 100;
-        var n3 = logo.querySelector('.n3');
-        n3.style.clipPath = 'inset(0 0 0 ' + clipPct + '%)';
-
-        logo.classList.add('ready');
+        document.getElementById('lockup').classList.add('ready');
       }
 
       if (document.fonts && document.fonts.load) {
-        document.fonts.load(WEIGHT + ' ' + LOGO_SIZE + 'px "' + FONT + '"').then(layoutLogo);
+        document.fonts.load(WEIGHT + ' 100px "' + FONT + '"').then(layoutLogo);
       } else {
         window.addEventListener('load', layoutLogo);
       }
