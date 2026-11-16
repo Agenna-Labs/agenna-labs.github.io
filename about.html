@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | AGENNA Labs</title>
+  <meta name="description" content="Agenna Labs is an AI software consultancy. We help SaaS businesses adapt to generative AI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #d8d2be;
+      --secondary: #988871;
+      --bg: #17181b;
+      --logo-size: 72px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.65;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 72px 24px 88px;
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 1px solid var(--secondary);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    .page {
+      max-width: 33rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 60px;
+    }
+
+    .head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .head h1 {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: 1.7rem;
+      line-height: 1.15;
+      margin-top: 26px;
+    }
+
+    .head p { color: #8a857a; }
+
+    .logo {
+      display: inline-block;
+      position: relative;
+      height: 1em;
+      line-height: 1;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: var(--logo-size);
+      text-decoration: none;
+      visibility: hidden;
+    }
+
+    .logo.ready { visibility: visible; }
+    .logo .gauge { visibility: hidden; }
+    .logo .n { position: absolute; top: 0; user-select: none; }
+    .logo .n1 { left: 0; color: var(--primary); z-index: 1; }
+    .logo .n2 { color: var(--secondary); z-index: 2; }
+    .logo .n3 { left: 0; color: var(--primary); z-index: 3; }
+
+    .mission {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 6vw, 2.3rem);
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+
+    .services {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .services h2 {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    .services p { text-wrap: balance; }
+
+    .contact {
+      position: relative;
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .contact a {
+      color: #8a857a;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .contact a:hover { color: var(--primary); }
+
+    .copy-btn {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-left: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: #5a564f;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.15s ease;
+    }
+    .copy-btn:hover { color: var(--primary); }
+    .copy-btn:active { transform: translateY(-50%) scale(0.92); }
+    .copy-btn.ok { color: #6fa896; }
+    .copy-btn svg {
+      width: 13px;
+      height: 13px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="head">
+      <a class="logo" id="logo" href="/" aria-label="Agenna Labs home">
+        <span class="gauge">N</span>
+        <span class="n n1">N</span>
+        <span class="n n2">N</span>
+        <span class="n n3">N</span>
+      </a>
+      <h1>Agenna Labs</h1>
+      <p>AI Software Consultancy</p>
+    </header>
+
+    <p class="mission">We help SaaS businesses adapt to generative AI.</p>
+
+    <section class="services">
+      <h2>Services</h2>
+      <p>We shape, build, and maintain AI systems for SaaS businesses: product features, internal tools, and the infrastructure behind both.</p>
+      <p>We work at any stage, from idea to production, and at any level of ambition, from table stakes to the frontier.</p>
+      <p>We make sure you really own your systems: we equip your people and agents to operate what we build, and we handle whatever you'd rather leave to us.</p>
+    </section>
+
+    <div class="contact">
+      <a href="mailto:hello@agennalabs.com" id="email">hello@agennalabs.com</a>
+      <button class="copy-btn" id="copyBtn" aria-label="Copy email" title="Copy email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var OVERLAP = 64; // percent
+      var LOGO_SIZE = 72; // px
+      var FONT = 'DM Serif Display';
+      var WEIGHT = 400;
+
+      function measureN() {
+        var c = document.createElement('canvas');
+        var ctx = c.getContext('2d');
+        ctx.font = WEIGHT + ' ' + LOGO_SIZE + 'px "' + FONT + '"';
+        return ctx.measureText('N').width;
+      }
+
+      function layoutLogo() {
+        var nw = measureN();
+        var overlapPx = nw * (OVERLAP / 100);
+        var pairW = 2 * nw - overlapPx;
+
+        var logo = document.getElementById('logo');
+        logo.style.width = pairW + 'px';
+
+        var n2 = logo.querySelector('.n2');
+        n2.style.left = (nw - overlapPx) + 'px';
+
+        // Reveal only the right portion of the front primary N for interleave
+        var clipPct = (1 - OVERLAP / 200) * 100;
+        var n3 = logo.querySelector('.n3');
+        n3.style.clipPath = 'inset(0 0 0 ' + clipPct + '%)';
+
+        logo.classList.add('ready');
+      }
+
+      if (document.fonts && document.fonts.load) {
+        document.fonts.load(WEIGHT + ' ' + LOGO_SIZE + 'px "' + FONT + '"').then(layoutLogo);
+      } else {
+        window.addEventListener('load', layoutLogo);
+      }
+
+      // Copy email
+      var btn = document.getElementById('copyBtn');
+      btn.addEventListener('click', function () {
+        var email = 'hello@agennalabs.com';
+        var done = function () {
+          btn.classList.add('ok');
+          setTimeout(function () { btn.classList.remove('ok'); }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(done).catch(function () {
+            fallbackCopy(email); done();
+          });
+        } else {
+          fallbackCopy(email); done();
+        }
+      });
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -81,12 +81,24 @@
       letter-spacing: 0.01em;
     }
 
-    .contact a {
+    .under {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .about-link {
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+
+    .contact a, .about-link {
       color: #8a857a;
       text-decoration: none;
       transition: color 0.15s ease;
     }
-    .contact a:hover { color: var(--primary); }
+    .contact a:hover, .about-link:hover { color: var(--primary); }
 
     .copy-btn {
       position: absolute;
@@ -123,14 +135,17 @@
       <span class="n n3">N</span>
     </div>
 
-    <div class="contact">
-      <a href="mailto:hello@agennalabs.com" id="email">hello@agennalabs.com</a>
-      <button class="copy-btn" id="copyBtn" aria-label="Copy email" title="Copy email">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-      </button>
+    <div class="under">
+      <div class="contact">
+        <a href="mailto:hello@agennalabs.com" id="email">hello@agennalabs.com</a>
+        <button class="copy-btn" id="copyBtn" aria-label="Copy email" title="Copy email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+      <a class="about-link" href="/about">About</a>
     </div>
   </div>
 
