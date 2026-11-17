@@ -46,7 +46,7 @@
       gap: 60px;
     }
 
-    /* Stacked wordmark from the brand generator: AGENNA over LABS, same face and size */
+    /* Stacked wordmark from the brand generator: AGENNA over a smaller bronze LABS */
     h1 { font-size: inherit; font-weight: 400; }
     .lockup {
       display: flex;
@@ -69,7 +69,7 @@
       user-select: none;
     }
     .wordmark .line { display: inline-flex; align-items: baseline; }
-    .wordmark .labs { letter-spacing: var(--tracking); margin-top: -0.13em; } /* brand spec: 10px line gap at 70px */
+    .wordmark .labs { font-size: 0.66em; color: var(--secondary); } /* brand spec: 66% of AGENNA, no extra spacing */
     .wordmark .age { letter-spacing: var(--tracking); }
     .wordmark .a { margin-left: var(--tracking); }
 
@@ -180,6 +180,10 @@
       var OVERLAP = 64; // percent
       var FONT = 'DM Serif Display';
       var WEIGHT = 400;
+      // Stacked wordmark settings from the brand config (px values are relative to typeSize)
+      var TYPE_SIZE = 70;
+      var LABS_SIZE = 66; // percent of AGENNA
+      var LABS_GAP = 18;  // px between AGENNA's baseline and the top of LABS
 
       function layoutLogo() {
         var ctx = document.createElement('canvas').getContext('2d');
@@ -194,6 +198,17 @@
           // Reveal only the right portion of the front primary N for interleave
           nn.querySelector('.n3').style.clipPath = 'inset(0 0 0 ' + (1 - OVERLAP / 200) * 100 + '%)';
         });
+
+        // Place LABS so its cap top sits LABS_GAP below AGENNA's baseline, as the generator draws it
+        var m = ctx.measureText('A');
+        if (m.fontBoundingBoxAscent !== undefined) {
+          var r = LABS_SIZE / 100;
+          var cap = m.actualBoundingBoxAscent / 100;
+          // Baseline offset from the top of a line-height: 1 box, in em
+          var base = (1 + (m.fontBoundingBoxAscent - m.fontBoundingBoxDescent) / 100) / 2;
+          var margin = LABS_GAP / TYPE_SIZE + cap * r - 1 - base * (r - 1); // in AGENNA em
+          document.querySelector('.wordmark .labs').style.marginTop = (margin / r) + 'em';
+        }
 
         document.getElementById('lockup').classList.add('ready');
       }
